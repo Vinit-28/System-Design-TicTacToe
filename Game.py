@@ -26,6 +26,10 @@ class TicTacToe:
                 self.setLoser()
                 self.winner.updateUserStats(gameId=self.gameId, result='Won', opponent=self.loser)
                 self.loser.updateUserStats(gameId=self.gameId, result='Loose', opponent=self.winner)
+            elif self.gameBoard.isGameDraw:
+                print("Game has ended with Draw.")
+                self.user1.updateUserStats(gameId=self.gameId, result='Draw', opponent=self.user2)
+                self.user2.updateUserStats(gameId=self.gameId, result='Draw', opponent=self.user1)
             self.storeMove(moveMadeBy, row, col)
 
 

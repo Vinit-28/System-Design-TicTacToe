@@ -9,6 +9,7 @@ class GameBoard:
         self.user2 = user2
         self.userToMakeMove = self.user1
         self.winner = None
+        self.isGameDraw = False
 
 
     # Decorator/Middleware to find the given position represents a valid cell or not #
@@ -43,6 +44,9 @@ class GameBoard:
             if args[0].winner is not None:
                 print(f"Game has ended, Winner : {args[0].winner.username}.")
                 return False
+            elif args[0].isGameDraw is not False:
+                print("Game has ended with Draw.")
+                return False
             else:
                 return method(*args, **kwargs)
         return decorate
@@ -56,6 +60,8 @@ class GameBoard:
         self.board[row][col] = self.userToMakeMove.userSymbol
         if self.isWinningMove(row, col):
             self.winner = self.userToMakeMove
+        elif self.isGameEndedWithDraw():
+            self.isGameDraw = False
         moveMadeBy = self.userToMakeMove
         self.switchUserToMakeMove()
         return moveMadeBy
@@ -77,6 +83,15 @@ class GameBoard:
             if self.board[i][self.COLUMNS-i-1] != self.userToMakeMove.userSymbol:
                 reverseDiagonal = False
         return horizontal or vertical or diagonal or reverseDiagonal
+
+
+    # Method to find the whether the game is draw or not #
+    def isGameEndedWithDraw(self):
+        for row in range(self.ROWS):
+            for col in range(self.COLUMNS):
+                if self.board[row][col] is None:
+                    return False
+        return True
 
 
     # Method to switch between both the users #
